@@ -359,7 +359,7 @@
             width: 260px;
             aspect-ratio: 9 / 19;
             border-radius: 40px;
-            background: #0b1026;
+            background: #04204a;
             border: 8px solid #1d2240;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             position: relative;
@@ -620,7 +620,8 @@
                         <div class="phone" aria-hidden="true">
                             <!-- Link It'in gerçek oyun ekranı (ekran görüntüsünden çizildi): üstte hedef şekiller,
                                  ortada nokta tahtası, altta geri al / ipucu butonları -->
-                            <svg viewBox="0 0 200 420">
+                            <!-- slice: ekran çerçeveyi tamamen doldurur (üstte/altta boşluk kalmaz), yanlardan birkaç piksel kırpılır -->
+                            <svg viewBox="0 0 200 420" preserveAspectRatio="xMidYMid slice">
                                 <!-- oyun alanı -->
                                 <rect width="200" height="420" fill="#072452"/>
 

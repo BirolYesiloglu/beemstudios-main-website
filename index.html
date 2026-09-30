@@ -317,6 +317,8 @@
 
         .store svg { width: 26px; height: 26px; flex-shrink: 0; }
 
+        .store span { min-width: 0; }
+
         .store small {
             display: block;
             font-size: 0.68rem;
@@ -385,20 +387,23 @@
             height: 100%;
         }
 
+        /* Oyuncunun noktaları birleştirerek çizdiği "M" (yol uzunluğu ~175) */
         .board-line {
-            stroke: var(--white);
-            stroke-width: 3;
+            stroke: #ff3b4a;
+            stroke-width: 5;
             stroke-linecap: round;
+            stroke-linejoin: round;
             fill: none;
-            stroke-dasharray: 600;
-            stroke-dashoffset: 600;
+            stroke-dasharray: 180;
+            stroke-dashoffset: 180;
             animation: draw 4.5s ease-in-out infinite;
         }
 
         @keyframes draw {
-            0%   { stroke-dashoffset: 600; }
-            55%  { stroke-dashoffset: 0; }
-            85%  { stroke-dashoffset: 0; opacity: 1; }
+            0%   { stroke-dashoffset: 180; opacity: 1; }
+            15%  { stroke-dashoffset: 180; }
+            60%  { stroke-dashoffset: 0; }
+            88%  { stroke-dashoffset: 0; opacity: 1; }
             100% { stroke-dashoffset: 0; opacity: 0; }
         }
 
@@ -504,7 +509,8 @@
             .nav-links a { display: none; }
             section { padding: 72px 0; }
             .hero { min-height: min(80vh, 680px); }
-            .store { flex: 1; min-width: 0; padding: 10px 14px; }
+            /* Telefonda butonlar alt alta ve tam genişlikte: yan yana sığmayıp yazı kutudan taşıyordu */
+            .store { flex: 1 1 100%; min-width: 0; padding: 10px 14px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -612,30 +618,71 @@
 
                     <div class="phone-area">
                         <div class="phone" aria-hidden="true">
+                            <!-- Link It'in gerçek oyun ekranı (ekran görüntüsünden çizildi): üstte hedef şekiller,
+                                 ortada nokta tahtası, altta geri al / ipucu butonları -->
                             <svg viewBox="0 0 200 420">
-                                <defs>
-                                    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0" stop-color="#1a2c6b"/>
-                                        <stop offset="1" stop-color="#0d1640"/>
-                                    </linearGradient>
-                                </defs>
-                                <rect width="200" height="420" fill="url(#screen)"/>
-                                <text x="100" y="80" text-anchor="middle" fill="#9aa6cf" font-family="Outfit, sans-serif" font-size="13" font-weight="600">LEVEL 42</text>
-                                <!-- faint guide -->
-                                <path d="M100 130 L150 180 L150 250 L100 300 L50 250 L50 180 Z M50 180 L150 250 M150 180 L50 250"
-                                      stroke="rgba(255,255,255,0.12)" stroke-width="3" fill="none" stroke-linecap="round"/>
-                                <!-- animated drawn line -->
-                                <path class="board-line" d="M100 130 L150 180 L150 250 L100 300 L50 250 L50 180 L100 130 M50 180 L150 250 M150 180 L50 250"/>
-                                <g fill="#fff">
-                                    <circle cx="100" cy="130" r="8"/>
-                                    <circle cx="150" cy="180" r="8"/>
-                                    <circle cx="150" cy="250" r="8"/>
-                                    <circle cx="100" cy="300" r="8"/>
-                                    <circle cx="50" cy="250" r="8"/>
-                                    <circle cx="50" cy="180" r="8"/>
+                                <!-- oyun alanı -->
+                                <rect width="200" height="420" fill="#072452"/>
+
+                                <!-- üst bar: hedefler + ayarlar -->
+                                <rect width="200" height="82" fill="#04204a"/>
+                                <g>
+                                    <rect x="74" y="38" width="20" height="20" rx="3.5" fill="#fff"/>
+                                    <path d="M78.5 53.5 V42.5 L84 48.5 L89.5 42.5 V53.5" stroke="#ff2d3d" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <rect x="106" y="38" width="20" height="20" rx="3.5" fill="#fff"/>
+                                    <path d="M121.5 42.5 H110.5 L121.5 53.5 H110.5" stroke="#ff2d3d" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <g font-family="Outfit, sans-serif" font-size="9.5" font-weight="800" fill="#fff" stroke="#0b1026" stroke-width="2" paint-order="stroke" text-anchor="middle">
+                                        <text x="84" y="71">X2</text>
+                                        <text x="116" y="71">X1</text>
+                                    </g>
                                 </g>
-                                <rect x="40" y="350" width="120" height="34" rx="17" fill="rgba(255,255,255,0.08)"/>
-                                <text x="100" y="372" text-anchor="middle" fill="#fff" font-family="Outfit, sans-serif" font-size="12" font-weight="600">HINT</text>
+                                <g fill="none" stroke="#cfc7c0">
+                                    <circle cx="180" cy="48" r="8" stroke-width="3.4" stroke-dasharray="3.4 2.88"/>
+                                    <circle cx="180" cy="48" r="4.8" stroke-width="3.4"/>
+                                </g>
+
+                                <!-- oyuncunun çizdiği M (noktaların altında) -->
+                                <path class="board-line" d="M74.5 229 V178 L100 203.5 L125.5 178 V229"/>
+
+                                <!-- nokta tahtası -->
+                                <g fill="#f4f4f4">
+                                    <circle cx="74.5" cy="178" r="9"/>
+                                    <circle cx="125.5" cy="178" r="9"/>
+                                    <circle cx="74.5" cy="203.5" r="9"/>
+                                    <circle cx="100" cy="203.5" r="9"/>
+                                    <circle cx="125.5" cy="203.5" r="9"/>
+                                    <circle cx="74.5" cy="229" r="9"/>
+                                    <circle cx="125.5" cy="229" r="9"/>
+                                    <circle cx="151" cy="254.5" r="9"/>
+                                    <circle cx="49" cy="280" r="9"/>
+                                    <circle cx="100" cy="280" r="9"/>
+                                    <circle cx="125.5" cy="280" r="9"/>
+                                </g>
+                                <g fill="#00f0f0">
+                                    <circle cx="49" cy="229" r="9"/>
+                                    <circle cx="100" cy="229" r="9"/>
+                                    <circle cx="49" cy="254.5" r="9"/>
+                                    <circle cx="74.5" cy="254.5" r="9"/>
+                                    <circle cx="100" cy="254.5" r="9"/>
+                                    <circle cx="125.5" cy="254.5" r="9"/>
+                                    <circle cx="151" cy="280" r="9"/>
+                                </g>
+
+                                <!-- alt bar: geri al + ipucu -->
+                                <rect y="372" width="200" height="48" fill="#04204a"/>
+                                <circle cx="84" cy="393" r="12" fill="#fff"/>
+                                <path d="M88.6 389.4 A6 6 0 1 0 89.8 394.6" stroke="#f0b7c0" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                                <path d="M90.6 386.2 V390.6 H86.2 Z" fill="#f0b7c0"/>
+                                <circle cx="116" cy="393" r="12" fill="#fff"/>
+                                <circle cx="116" cy="393" r="7.2" fill="#ff1f2d"/>
+                                <circle cx="116" cy="389.6" r="1.3" fill="#fff"/>
+                                <rect x="114.9" y="391.8" width="2.2" height="5" rx="1" fill="#fff"/>
+                                <g font-family="Outfit, sans-serif" font-size="6.5" font-weight="800" fill="#fff" text-anchor="middle">
+                                    <circle cx="93.5" cy="384" r="5" fill="#f04a55"/>
+                                    <text x="93.5" y="386.3">5</text>
+                                    <circle cx="125.5" cy="384" r="5" fill="#f04a55"/>
+                                    <text x="125.5" y="386.3">1</text>
+                                </g>
                             </svg>
                         </div>
                     </div>
